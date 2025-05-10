@@ -241,6 +241,25 @@
         body.dark input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
+.tabla-scroll {
+    overflow-x: auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .tabla-scroll table {
+        min-width: 600px;
+    }
+
+    .botones-proyecto {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-carga-horas label {
+        font-size: 14px;
+    }
+}
 
     </style>
 </head>
@@ -261,8 +280,8 @@
     <h2 class="titulo" style="margin-top: 10px;">Proyectos Asignados</h2>
 </div>
 
-
 <div class="tabla-container">
+<div class="tabla-scroll">
     <table>
         <thead>
             <tr>
@@ -333,7 +352,7 @@
         </tbody>
     </table>
 </div>
-
+</div>
 <script>
 function mostrarFormulario(index) {
     var div = document.getElementById("formulario-" + index);
@@ -375,7 +394,6 @@ window.onload = function () {
     }
 }
 </script>
-
 
 </body>
 </html>

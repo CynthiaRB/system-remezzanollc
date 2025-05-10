@@ -336,6 +336,25 @@ table thead th {
         bottom: auto;
     }
 }
+.tabla-scroll {
+    overflow-x: auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .tabla-scroll table {
+        min-width: 600px;
+    }
+
+    .tarjeta {
+        padding: 20px;
+    }
+
+    th, td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
 
 </style>
 
@@ -382,6 +401,7 @@ table thead th {
 
 <div class="tarjeta">
     <h3>{{ emp.nombre }}</h3>
+     <div class="tabla-scroll">
     <table>
         <thead>
             <tr>
@@ -408,6 +428,7 @@ table thead th {
             </tr>
         </tbody>
     </table>
+    </div>
 </div>
 {% endfor %}
 
@@ -441,4 +462,3 @@ window.onload = function () {
 
 </body>
 </html>
-

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel de Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navbar .saludo {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .navbar img {
+            height: 60px;
+        }
+
+        .navbar .salir {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .navbar .salir:hover {
+            background-color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 26px;
+            color: #222;
+        }
+
+        .tabla-container {
+            background-color: white;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .botones-proyecto {
+            display: flex;
+            gap: 10px;
+        }
+
+        .botones-proyecto button {
+            padding: 8px 16px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .botones-proyecto button:hover {
+            background-color: #333;
+        }
+
+        .form-carga-horas {
+            background-color: #fcfcfc;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .form-carga-horas input[type="text"],
+        .form-carga-horas input[type="time"],
+        .form-carga-horas input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn-cargar {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-cargar:hover {
+            background-color: #333;
+        }
+
+        .resumen-horas h4 {
+            margin-top: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .tabla-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            .navbar .salir {
+                align-self: flex-end;
+            }
+        }
+        body.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+        }
+        body.dark label,
+        body.dark h2,
+        body.dark h4,
+        body.dark strong {
+            color: #e0e0e0;
+        }
+
+        body.dark .form-carga-horas {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+        }
+
+        body.dark input[type="text"],
+        body.dark input[type="time"],
+        body.dark input[type="date"] {
+            background-color: #2b2b2b;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+
+        body.dark .btn-cargar {
+            background-color: #444;
+            color: white;
+        }
+
+        body.dark .btn-cargar:hover {
+            background-color: #666;
+        }
+
+        body.dark .navbar {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+
+        body.dark .tarjeta,
+        body.dark .tabla-container {
+            background-color: #1e1e1e;
+            box-shadow: none;
+        }
+
+        body.dark table {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        body.dark th {
+            background-color: #333;
+        }
+
+        body.dark tr:nth-child(even) {
+            background-color: #2a2a2a;
+        }
+
+        body.dark input,
+        body.dark select,
+        body.dark textarea {
+            background-color: #2b2b2b;
+            color: #f5f5f5;
+            border: 1px solid #444;
+        }
+
+        body.dark .salir {
+            background-color: #444;
+        }
+
+        body.dark .salir:hover {
+            background-color: #666;
+        }
+/* Ajustar color de íconos de input en modo oscuro */
+        body.dark input[type="time"]::-webkit-calendar-picker-indicator,
+        body.dark input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <button onclick="toggleDarkMode()" class="salir" id="modoBoton">☀️</button>
+        <div class="saludo">Hola, {{ session['usuario'] }}!</div>
+    </div>
+
+    <form method="POST" action="/logout">
+        <button type="submit" class="salir">🚪 Salir</button>
+    </form>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" style="width: 70px; height: auto;">
+    <h2 class="titulo" style="margin-top: 10px;">Proyectos Asignados</h2>
+</div>
+
+
+<div class="tabla-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha Entrega</th>
+                <th>Cliente</th>
+                <th>Proyecto</th>
+                <th>País</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in proyectos %}
+            <tr>
+                <td>{{ p[1] }}</td>
+                <td>{{ p[2] }}</td>
+                <td>{{ p[3] }}</td>
+                <td>{{ p[5] }}</td>
+                <td class="botones-proyecto">
+                    <button onclick="mostrarFormulario({{ loop.index0 }})">Cargar Horas</button>
+                    <button onclick="toggleResumen({{ loop.index0 }}, this)">Actividad</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div id="formulario-{{ loop.index0 }}" style="display: none;">
+                        <form class="form-carga-horas" method="post" action="/cargar_horas">
+                            <input type="hidden" name="proyecto" value="{{ p[3] }}">
+                            <label>Descripción:</label>
+                            <input type="text" name="descripcion" required>
+                            <label>Hora inicio:</label>
+                            <input type="time" name="hora_inicio" required>
+                            <label>Hora fin:</label>
+                            <input type="time" name="hora_fin" required>
+                            <label>Fecha:</label>
+                            <input type="date" name="fecha" value="{{ fecha_actual }}" required>
+                            <button type="submit" class="btn-cargar">Guardar</button>
+                        </form>
+                    </div>
+
+                    <div id="resumen-{{ loop.index0 }}" style="display: none;" class="resumen-horas">
+                        <h4>Resumen de horas cargadas</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Descripción</th>
+                                    <th>Inicio</th>
+                                    <th>Fin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for h in horas[p[3]]["tareas"] %}
+                            <tr>
+                                <td>{{ h[0] }}</td>
+                                <td>{{ h[1] }}</td>
+                                <td>{{ h[2] }}</td>
+                                <td>{{ h[3] }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <p><strong>Total:</strong> {{ "%.2f"|format(horas[p[3]]['total_horas']) }} hrs</p>
+
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function mostrarFormulario(index) {
+    var div = document.getElementById("formulario-" + index);
+    div.style.display = div.style.display === "none" ? "block" : "none";
+}
+
+function toggleResumen(index, boton) {
+    const div = document.getElementById("resumen-" + index);
+    if (div.style.display === "none") {
+        div.style.display = "block";
+        boton.innerText = "Ocultar";
+    } else {
+        div.style.display = "none";
+        boton.innerText = "Actividad";
+    }
+}
+</script>
+<script>
+function toggleDarkMode() {
+    const body = document.body;
+    const boton = document.getElementById("modoBoton");
+
+    body.classList.toggle('dark');
+    const esOscuro = body.classList.contains('dark');
+    localStorage.setItem('modoOscuro', esOscuro ? 'true' : 'false');
+
+    boton.innerText = esOscuro ? '🌙' : '☀️';
+}
+
+window.onload = function () {
+    const esOscuro = localStorage.getItem('modoOscuro') === 'true';
+    if (esOscuro) {
+        document.body.classList.add('dark');
+    }
+
+    const boton = document.getElementById("modoBoton");
+    if (boton) {
+        boton.innerText = document.body.classList.contains('dark') ? '🌙' : '☀️';
+    }
+}
+</script>
+
+
+</body>
+</html>

@@ -1,1 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resumen Financiero</title>
+    <div style="text-align: center; margin-top: 10px;">
+    <a href="/descargar_resumen_financiero">
+        <button style="padding: 10px 20px; font-size: 15px; border-radius: 8px; background-color: darkgreen; color: white; border: none;">
+            📥 Descargar en Excel
+        </button>
+    </a>
+</div>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar {
+        background-color: #ffffff;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .navbar .saludo {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .navbar img {
+        height: 60px;
+    }
+
+    .salir {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.3s;
+    }
+
+    .salir:hover {
+        background-color: #333;
+    }
+
+    .tarjeta {
+        background-color: white;
+        max-width: 100%;
+        margin: 30px auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    h3 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    input, select, textarea {
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    button, input[type="submit"] {
+        padding: 12px 20px;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: background 0.3s;
+    }
+
+    button:hover, input[type="submit"]:hover {
+        background-color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+       th, td {
+        border: 1px solid #ccc;
+        padding: 14px 16px;
+        text-align: left;
+        vertical-align: top;
+        line-height: 1.5;
+        min-width: 140px;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    th {
+        background-color: #f0f0f0;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fafafa;
+    }
+
+    td:nth-child(3),
+    td:nth-child(6),
+    td:nth-child(7),
+    td:nth-child(8) {
+        font-weight: bold;
+        background-color: #fcfcfc;
+    }
+
+    body.dark td:nth-child(3),
+    body.dark td:nth-child(6),
+    body.dark td:nth-child(7),
+    body.dark td:nth-child(8) {
+        background-color: #2a2a2a;
+        color: #fff;
+    }
+
+    table tr:hover {
+        background-color: #f3f3f3;
+    }
+    body.dark table tr:hover {
+        background-color: #333333;
+    }
+    tr {
+        border-bottom: 8px solid #fff;
+    }
+    body.dark tr {
+        border-bottom: 8px solid #1e1e1e;
+    }
+
+    .botones {
+        margin: 30px auto;
+        max-width: 1100px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .salir {
+            align-self: flex-end;
+        }
+
+        .tarjeta {
+            width: 90%;
+            padding: 20px;
+        }
+    }
+    body.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+    }
+        body.dark strong,
+        body.dark h3,
+        body.dark label {
+            color: #ffffff;
+        }
+
+        body.dark table th,
+        body.dark table td {
+            color: #f0f0f0;
+        }
+
+        body.dark .tarjeta input,
+        body.dark .tarjeta select {
+            background-color: #2b2b2b;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+
+        body.dark .tarjeta input::placeholder {
+            color: #cccccc;
+        }
+
+        body.dark .tarjeta label {
+            font-weight: bold;
+        }
+
+    body.dark .navbar {
+        background-color: #1e1e1e;
+        border-bottom: 1px solid #333;
+    }
+
+    body.dark .tarjeta,
+    body.dark .tabla-container {
+        background-color: #1e1e1e;
+        box-shadow: none;
+    }
+
+    body.dark table {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+    }
+
+    body.dark th {
+        background-color: #333;
+    }
+
+    body.dark tr:nth-child(even) {
+        background-color: #2a2a2a;
+    }
+
+    body.dark input,
+    body.dark select,
+    body.dark textarea {
+        background-color: #2b2b2b;
+        color: #f5f5f5;
+        border: 1px solid #444;
+    }
+
+    body.dark .salir {
+        background-color: #444;
+    }
+
+    body.dark .salir:hover {
+        background-color: #666;
+    }
+    body.dark .resumen-fila {
+    background-color: #1e1e1e !important;
+}
+
+body.dark .resumen-fila strong {
+    color: #ffffff;
+}
+
+body.dark .resumen-fila td {
+    background-color: #1e1e1e !important;
+    color: #f0f0f0;
+}
+@media (max-width: 1024px) {
+    #form-empleados_activos table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    #form-empleados_activos table td,
+    #form-empleados_activos table th {
+        min-width: 150px;
+    }
+
+    #form-empleados_activos table input,
+    #form-empleados_activos table select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+form input[type="submit"] {
+    margin-top: 10px;
+}
+.tabla-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Solo activa el scroll horizontal en pantallas menores a 1024px */
+@media (max-width: 1024px) {
+    .tabla-responsive table {
+        min-width: 900px;
+    }
+}
+.negativa {
+    color: red;
+    font-weight: bold;
+}
+.positiva {
+    color: green;
+    font-weight: bold;
+}
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.tabla-responsive {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f0f0f0;
+    z-index: 2;
+}
+.volver-panel {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 99;
+    background-color: black;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.volver-panel:hover {
+    background-color: #333;
+}
+
+@media (min-width: 769px) {
+    .volver-panel {
+        position: absolute;
+        left: 40px;
+        bottom: auto;
+    }
+}
+
+</style>
+
+<script>
+    window.addEventListener("scroll", () => {
+        const btn = document.getElementById("botonSalir");
+        if (window.innerWidth <= 600) {
+            if (window.scrollY > 100) {
+                btn.classList.add("visible");
+            } else {
+                btn.classList.remove("visible");
+            }
+        }
+    });
+</script>
+
+<body>
+                 
+    <div class="navbar">
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <button onclick="toggleDarkMode()" class="salir" id="modoBoton">☀️</button>
+        <div class="saludo">Hola, Administrador!</div>
+    </div>
+    <form method="POST" action="/logout">
+        <button type="submit" class="salir">🚪 Salir</button>
+    </form>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" style="height: 70px;">
+    <h2 class="titulo" style="margin-top: 10px;">Resumen Financiero</h2>
+</div>
+
+
+    <div class="tarjeta">
+        <div class="tabla-responsive">
+            <table>
+                 <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Proyecto</th>
+                    <th>Precio</th>
+                    <th>Comisión 1: Quien trajo el proyecto</th>
+                    <th>Comisión 2: Socios participantes</th>
+                    <th>Total Gastos</th>
+                    <th>Costo de Horas</th>
+                    <th>Rentabilidad Neta</th>
+                    <th>Comisión 3: Reparto entre socios del país</th>
+                </tr>
+                 </thead>
+            <tbody>
+                {% for r in resumen %}
+               <tr>
+                    <td>{{ r[0] }}</td>
+                    <td>{{ r[1] }}</td>
+                    <td>{{ r[2] }}</td>
+                    <td>{{ r[3] }}</td>
+                    <td>{{ r[4] }}</td>
+                    <td>{{ r[5] }}</td>
+                    <td>{{ r[6] }}</td>
+                    <td class="{% if r[7]|replace('$','')|float < 0 %}negativa{% else %}positiva{% endif %}">{{ r[7] }}</td>
+                    <td>{{ r[8] }}</td>
+                </tr>
+               
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script>
+function toggleDarkMode() {
+    const body = document.body;
+    const boton = document.getElementById("modoBoton");
+
+    body.classList.toggle('dark');
+    const esOscuro = body.classList.contains('dark');
+    localStorage.setItem('modoOscuro', esOscuro ? 'true' : 'false');
+
+    // Cambiar ícono del botón
+    boton.innerText = esOscuro ? '🌙' : '☀️';
+}
+
+// Al cargar la página
+window.onload = function () {
+    const esOscuro = localStorage.getItem('modoOscuro') === 'true';
+    if (esOscuro) {
+        document.body.classList.add('dark');
+    }
+    const boton = document.getElementById("modoBoton");
+    if (boton) {
+        boton.innerText = esOscuro ? '🌙' : '☀️';
+    }
+}
+</script>
+<a href="/admin"><button class="volver-panel">⬅ Volver al Panel</button></a>
+
+</body>
+</html>
 

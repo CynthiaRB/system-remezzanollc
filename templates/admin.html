@@ -659,7 +659,10 @@ form input[type="submit"] {
             <td>
                 <button onclick="toggleResumen('{{ loop.index0 }}', this)">Ver resumen</button>
                 <button onclick="mostrarModalGasto('{{ p[3] }}')">Agregar gasto</button>
-
+                 <form method="POST" action="/eliminar_proyecto" style="display:inline;">
+                    <input type="hidden" name="proyecto" value="{{ p[3] }}">
+                    <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">🗑 Eliminar</button>
+                </form>
             </td>
         </tr>
              <tr id="resumen-{{ loop.index0 }}" class="resumen-fila" style="display: none;">

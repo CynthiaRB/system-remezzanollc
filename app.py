@@ -1020,6 +1020,37 @@ def descargar_resumen_usuarios():
     output.seek(0)
     return send_file(output, as_attachment=True, download_name="resumen_usuarios.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+@app.route("/eliminar_proyecto", methods=["POST"])
+def eliminar_proyecto():
+    nombre_proyecto = request.form.get("proyecto")
+
+    # 1. Eliminar del archivo proyectos.csv
+    proyectos_filtrados = []
+    with open("proyectos.csv", newline='') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if row[3] != nombre_proyecto:
+                proyectos_filtrados.append(row)
+
+    with open("proyectos.csv", "w", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(proyectos_filtrados)
+
+    # 2. Eliminar horas asociadas al proyecto
+    if os.path.exists("horas.csv"):
+        horas_filtradas = []
+        with open("horas.csv", newline='') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if len(row) >= 2 and row[1] != nombre_proyecto:
+                    horas_filtradas.append(row)
+
+        with open("horas.csv", "w", newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(horas_filtradas)
+
+    return redirect("/admin")
+
 
 
 if __name__ == "__main__":

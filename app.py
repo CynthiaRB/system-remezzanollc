@@ -15,7 +15,7 @@ def login():
         correo = request.form["correo"]
         contrasena = request.form["contrasena"]
 
-        if correo == "admin@remezzano.com" and contrasena == "admin123":
+        if correo == "andres@remezzano.com" and contrasena == "Andres2025!":
             session["admin"] = True
             return redirect("/admin")
 

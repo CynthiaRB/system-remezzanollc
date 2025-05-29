@@ -1020,6 +1020,25 @@ def descargar_resumen_usuarios():
     output.seek(0)
     return send_file(output, as_attachment=True, download_name="resumen_usuarios.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+@app.route("/alta_proyecto", methods=["POST"])
+def alta_proyecto():
+    fecha = request.form["fecha"]
+    fecha_entrega = request.form["fecha_entrega"]
+    cliente = request.form["cliente"]
+    proyecto = request.form["proyecto"]
+    precio = request.form["precio"]
+    quien_trajo = request.form["quien_trajo"]
+    pais = request.form["pais"]
+    socios = ", ".join(request.form.getlist("socios"))
+    gastos = ""  # Placeholder
+    empleados_seleccionados = ", ".join(request.form.getlist("empleados"))
+
+    with open("proyectos.csv", "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([fecha, fecha_entrega, cliente, proyecto, precio, pais, socios, empleados_seleccionados, gastos, quien_trajo])
+
+    return redirect("/admin")
+
 @app.route("/eliminar_proyecto", methods=["POST"])
 def eliminar_proyecto():
     nombre_proyecto = request.form.get("proyecto")

@@ -930,6 +930,22 @@ def descargar_resumen_financiero():
     output.seek(0)
     return send_file(output, as_attachment=True, download_name="resumen_financiero.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+@app.route("/alta_empleado", methods=["POST"])
+def alta_empleado():
+    nombre = request.form["nombre"]
+    pais = request.form["pais"]
+    tipo = request.form["tipo"]
+    costo_hora = request.form["costo_hora"]
+    salario_mensual = request.form["salario_mensual"]
+    correo = request.form["correo"]
+    password = request.form["password"]
+
+    with open("empleados.csv", "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([nombre, pais, tipo, costo_hora, salario_mensual, correo, password])
+
+    return redirect("/admin")
+
 
 @app.route("/descargar_resumen_usuarios")
 def descargar_resumen_usuarios():

@@ -1,11 +1,18 @@
+
 from flask import Flask, render_template, request, redirect, session,send_file
 app = Flask(__name__)
 app.secret_key = "una_clave_super_secreta"
 import csv
 import os
-from datetime import datetime
+import psycopg2
+import os
 
-app = Flask(__name__)
+DATABASE_URL = os.environ.get('DATABASE_URL')  # Usa la variable de entorno de Railway
+
+def get_connection():
+    return psycopg2.connect(DATABASE_URL)
+
+from datetime import datetime
 app.secret_key = "clave_secreta"
 
 @app.route("/", methods=["GET", "POST"])

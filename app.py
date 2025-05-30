@@ -5,8 +5,8 @@ import csv
 import os
 import psycopg2
 
+
 def get_connection():
-    def get_connection():
     DATABASE_URL = os.getenv("DATABASE_URL")
     if not DATABASE_URL:
         raise Exception("DATABASE_URL not found. Did you set it in Railway?")

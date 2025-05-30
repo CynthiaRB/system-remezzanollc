@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session,send_file
 app = Flask(__name__)
 app.secret_key = "una_clave_super_secreta"
 import csv
@@ -1055,7 +1055,23 @@ def eliminar_proyecto():
 
     return redirect("/admin")
 
+# Ruta para ver el contenido de un CSV en el navegador
+@app.route("/ver_csv/<nombre>")
+def ver_csv(nombre):
+    try:
+        with open(f"{nombre}.csv", "r") as f:
+            data = f.read()
+        return f"<pre>{data}</pre>"
+    except FileNotFoundError:
+        return "Archivo no encontrado."
 
+# Ruta para descargar el CSV
+@app.route("/descargar_csv/<nombre>")
+def descargar_csv(nombre):
+    try:
+        return send_file(f"{nombre}.csv", as_attachment=True)
+    except FileNotFoundError:
+        return "Archivo no encontrado."
 
 if __name__ == "__main__":
     app.run()

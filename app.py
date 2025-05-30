@@ -1,17 +1,11 @@
-from flask import Flask, render_template, request, redirect, session,send_file
+from flask import Flask, render_template, request, redirect, session
 app = Flask(__name__)
 app.secret_key = "una_clave_super_secreta"
 import csv
 import os
-import psycopg2
-
-def get_connection():
-    if not DATABASE_URL:
-        raise Exception("DATABASE_URL not found. Did you set it in Railway?")
-    return psycopg2.connect(DATABASE_URL, sslmode='require')
-    
-
 from datetime import datetime
+
+app = Flask(__name__)
 app.secret_key = "clave_secreta"
 
 @app.route("/", methods=["GET", "POST"])
@@ -48,8 +42,7 @@ def login():
 def admin():
     if "admin" not in session:
         return redirect("/")
-  conn = get_connection()
-    cur = conn.cursor()
+
     if request.method == "POST":
         fecha = request.form["fecha"]
         fecha_entrega = request.form["fecha_entrega"]
@@ -134,7 +127,7 @@ def admin():
             except:
                 continue
         totales_gastos[p[3]] = total
-    conn.close()
+
     # Finalmente el return
     return render_template("admin.html",
     proyectos=proyectos,
@@ -1058,71 +1051,9 @@ def eliminar_proyecto():
 
     return redirect("/admin")
 
-# Ruta para ver el contenido de un CSV en el navegador
-@app.route("/ver_csv/<nombre>")
-def ver_csv(nombre):
-    try:
-        with open(f"{nombre}.csv", "r") as f:
-            data = f.read()
-        return f"<pre>{data}</pre>"
-    except FileNotFoundError:
-        return "Archivo no encontrado."
 
-# Ruta para descargar el CSV
-@app.route("/descargar_csv/<nombre>")
-def descargar_csv(nombre):
-    try:
-        return send_file(f"{nombre}.csv", as_attachment=True)
-    except FileNotFoundError:
-        return "Archivo no encontrado."
-        
-@app.route("/migrar_datos")
-def migrar_datos():
-    try:
-        conn = get_connection()
-        cur = conn.cursor()
-
-        # Migrar empleados.csv a empleados (PostgreSQL)
-        with open("empleados.csv", newline="") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if len(row) >= 7:
-                    nombre, pais, tipo, costo_hora, pago_mensual, correo, contrasena = row
-                    cur.execute("""
-                        INSERT INTO empleados (nombre, pais, tipo, costo_hora, pago_mensual, correo, contrasena)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)
-                        ON CONFLICT (correo) DO NOTHING;
-                    """, (nombre, pais, tipo, float(costo_hora), float(pago_mensual), correo, contrasena))
-
-        # Migrar proyectos.csv a proyectos (PostgreSQL)
-        with open("proyectos.csv", newline="") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if len(row) >= 10:
-                    fecha, fecha_entrega, cliente, proyecto, precio, pais, socios, empleados, gastos, quien_trajo = row
-                    cur.execute("""
-                        INSERT INTO proyectos (fecha, fecha_entrega, cliente, proyecto, precio, pais, socios, empleados, gastos, quien_trajo)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-                    """, (fecha, fecha_entrega, cliente, proyecto, float(precio), pais, socios, empleados, gastos, quien_trajo))
-
-        # Migrar horas.csv a horas (PostgreSQL)
-        with open("horas.csv", newline="") as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if len(row) >= 6:
-                    fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin = row
-                    cur.execute("""
-                        INSERT INTO horas (fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin)
-                        VALUES (%s, %s, %s, %s, %s, %s);
-                    """, (fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin))
-
-        conn.commit()
-        cur.close()
-        conn.close()
-
-        return "Datos migrados exitosamente a PostgreSQL 🚀"
-    except Exception as e:
-        return f"Error al migrar datos: {str(e)}"
+if __name__ == "__main__":
+    app.run()
 
 
 

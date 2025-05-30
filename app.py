@@ -1079,59 +1079,54 @@ def descargar_csv(nombre):
         return send_file(f"{nombre}.csv", as_attachment=True)
     except FileNotFoundError:
         return "Archivo no encontrado."
-@app.route("/migrar_datos")
+ @app.route("/migrar_datos")
 def migrar_datos():
-    conn = get_connection()
-    cur = conn.cursor()
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
 
-    # Migrar empleados
-    with open("empleados.csv", newline="") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if len(row) >= 7:
-                nombre, pais, tipo, costo_hora, pago_mensual, correo, contrasena = row
-                try:
+        # Migrar empleados.csv a empleados (PostgreSQL)
+        with open("empleados.csv", newline="") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if len(row) >= 7:
+                    nombre, pais, tipo, costo_hora, pago_mensual, correo, contrasena = row
                     cur.execute("""
                         INSERT INTO empleados (nombre, pais, tipo, costo_hora, pago_mensual, correo, contrasena)
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (correo) DO NOTHING;
                     """, (nombre, pais, tipo, float(costo_hora), float(pago_mensual), correo, contrasena))
-                except Exception as e:
-                    print("Error insertando empleado:", e)
 
-    # Migrar proyectos
-    with open("proyectos.csv", newline="") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if len(row) >= 10:
-                fecha, fecha_entrega, cliente, proyecto, precio, pais, socios, empleados, gastos, quien_trajo = row
-                try:
+        # Migrar proyectos.csv a proyectos (PostgreSQL)
+        with open("proyectos.csv", newline="") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if len(row) >= 10:
+                    fecha, fecha_entrega, cliente, proyecto, precio, pais, socios, empleados, gastos, quien_trajo = row
                     cur.execute("""
                         INSERT INTO proyectos (fecha, fecha_entrega, cliente, proyecto, precio, pais, socios, empleados, gastos, quien_trajo)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                     """, (fecha, fecha_entrega, cliente, proyecto, float(precio), pais, socios, empleados, gastos, quien_trajo))
-                except Exception as e:
-                    print("Error insertando proyecto:", e)
 
-    # Migrar horas
-    with open("horas.csv", newline="") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if len(row) >= 6:
-                fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin = row
-                try:
+        # Migrar horas.csv a horas (PostgreSQL)
+        with open("horas.csv", newline="") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if len(row) >= 6:
+                    fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin = row
                     cur.execute("""
                         INSERT INTO horas (fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin)
                         VALUES (%s, %s, %s, %s, %s, %s);
                     """, (fecha, proyecto, usuario, descripcion, hora_inicio, hora_fin))
-                except Exception as e:
-                    print("Error insertando horas:", e)
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        conn.commit()
+        cur.close()
+        conn.close()
 
-    return "Datos migrados exitosamente a PostgreSQL!"
+        return "Datos migrados exitosamente a PostgreSQL 🚀"
+    except Exception as e:
+        return f"Error al migrar datos: {str(e)}"
+
 
 
 if __name__ == "__main__":

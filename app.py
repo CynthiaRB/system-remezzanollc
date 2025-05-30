@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, session,send_file
 app = Flask(__name__)
 app.secret_key = "una_clave_super_secreta"
@@ -938,8 +937,6 @@ def descargar_resumen_financiero():
     return send_file(output, as_attachment=True, download_name="resumen_financiero.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
-
-
 @app.route("/descargar_resumen_usuarios")
 def descargar_resumen_usuarios():
     import io
@@ -1029,8 +1026,6 @@ def descargar_resumen_usuarios():
     output.seek(0)
     return send_file(output, as_attachment=True, download_name="resumen_usuarios.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
-
-
 @app.route("/eliminar_proyecto", methods=["POST"])
 def eliminar_proyecto():
     nombre_proyecto = request.form.get("proyecto")
@@ -1079,7 +1074,8 @@ def descargar_csv(nombre):
         return send_file(f"{nombre}.csv", as_attachment=True)
     except FileNotFoundError:
         return "Archivo no encontrado."
- @app.route("/migrar_datos")
+        
+@app.route("/migrar_datos")
 def migrar_datos():
     try:
         conn = get_connection()

@@ -4,9 +4,10 @@ app.secret_key = "una_clave_super_secreta"
 import csv
 import os
 import psycopg2
-import os
 
-DATABASE_URL = os.environ.get('DATABASE_URL')  # Usa la variable de entorno de Railway
+DATABASE_URL = os.getenv("DATABASE_URL")
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+cur = conn.cursor()
 
 def get_connection():
     return psycopg2.connect(DATABASE_URL)

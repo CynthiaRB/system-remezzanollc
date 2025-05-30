@@ -5,12 +5,13 @@ import csv
 import os
 import psycopg2
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-cur = conn.cursor()
-
 def get_connection():
-    return psycopg2.connect(DATABASE_URL)
+    def get_connection():
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    if not DATABASE_URL:
+        raise Exception("DATABASE_URL not found. Did you set it in Railway?")
+    return psycopg2.connect(DATABASE_URL, sslmode='require')
+    
 
 from datetime import datetime
 app.secret_key = "clave_secreta"

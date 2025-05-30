@@ -48,7 +48,8 @@ def login():
 def admin():
     if "admin" not in session:
         return redirect("/")
-
+  conn = get_connection()
+    cur = conn.cursor()
     if request.method == "POST":
         fecha = request.form["fecha"]
         fecha_entrega = request.form["fecha_entrega"]
@@ -133,7 +134,7 @@ def admin():
             except:
                 continue
         totales_gastos[p[3]] = total
-
+    conn.close()
     # Finalmente el return
     return render_template("admin.html",
     proyectos=proyectos,
